@@ -61,7 +61,7 @@ jobs:
 
       - name: Generate Build Files
         run: |
-          cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=OFF -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -S . -B ./build
+          cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DBUILD_STANDALONE=OFF -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" -S . -B ./build
 
       - name: Build Project
         run: |
@@ -77,7 +77,6 @@ jobs:
           path: |
             ./build/*_artefacts/Release/AU
             ./build/*_artefacts/Release/VST3
-            ./build/*_artefacts/Release/readme.txt
             !./build/*_artefacts/Release/VST3/*.exp
             !./build/*_artefacts/Release/VST3/*.lib
 

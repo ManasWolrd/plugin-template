@@ -77,7 +77,7 @@ private:
 
                 if (json.isObject()) {
                     // 获取最新版本号，例如 "v1.2.0"
-                    juce::String latest_version = json.getProperty("tag_name", "").toString();
+                    juce::String latest_version = json.getProperty("tag_name", "v" JucePlugin_VersionString).toString();
 
                     // GitHub 标签通常带 'v'，对比前处理掉
                     juce::String current_version = JucePlugin_VersionString;

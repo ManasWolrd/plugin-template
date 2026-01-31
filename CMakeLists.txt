@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 3.22.1)
 # ----------------------------------------
 # 插件信息，改了记得改src/global.hpp
 # ----------------------------------------
-set(TEAM_NAME LModel)
-set(PLUGIN_REPO_URL "https://github.com/team_name/repo_name")
-set(PLUGIN_NAME template)
+set(TEAM_NAME ManasWorld)
+set(PLUGIN_REPO_URL "https://github.com/ManasWorld/plugin-template")
+set(PLUGIN_NAME plugin-template)
 set(PLUGIN_VERSION 0.0.1)
-set(PLUGIN_BUNDLE_ID "com.l_model.${PLUGIN_NAME}")
+set(PLUGIN_BUNDLE_ID "com.manasworld.${PLUGIN_NAME}")
 
 option(BUILD_STANDALONE "Build Standalone plugin format" ON)
 option(BUILD_VST3 "Build VST3 plugin format" ON)
@@ -45,7 +45,9 @@ if (BUILD_LV2 AND UNIX AND NOT APPLE)
     list(APPEND plugin_formats LV2)
 endif()
 
+# ----------------------------------------
 # 插件信息在这里也可以设置
+# ----------------------------------------
 juce_add_plugin(${PROJECT_NAME}
     COMPANY_NAME ${TEAM_NAME}
     IS_SYNTH FALSE

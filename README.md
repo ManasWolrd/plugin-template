@@ -5,11 +5,11 @@
 
 # 克隆到本地
 ```bash
-git clone --recurse-submodules https://github.com/L-MODEL-TEST/l-model-plugin-template.git
+git clone --recurse-submodules https://github.com/ManasWorld/plugin-template.git
 ```
 或者
 ```bash
-git clone https://github.com/L-MODEL-TEST/l-model-plugin-template.git
+git clone https://github.com/ManasWorld/plugin-template.git
 cd l-model-plugin-template
 git submodule update --init --recursive
 ```
@@ -24,7 +24,7 @@ sudo xattr -dr com.apple.quarantine /path/to/your/plugins/plugin_name.lv2
 ## 构建
 
 ```bash
-git clone --recurse-submodules https://github.com/L-MODEL-TEST/l-model-plugin-template.git
+git clone --recurse-submodules https://github.com/ManasWorld/plugin-template.git
 
 # windows
 cmake -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -S . -B ./build

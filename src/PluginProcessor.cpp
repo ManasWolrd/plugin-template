@@ -1,5 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "global.hpp"
 
 //==============================================================================
 EmptyAudioProcessor::EmptyAudioProcessor()
@@ -15,7 +16,9 @@ EmptyAudioProcessor::EmptyAudioProcessor()
 
     value_tree_ = std::make_unique<juce::AudioProcessorValueTreeState>(*this, nullptr, kParameterValueTreeIdentify,
                                                                        std::move(layout));
-    preset_manager_ = std::make_unique<pluginshared::PresetManager>(*value_tree_, *this);
+    preset_manager_ = std::make_unique<pluginshared::PresetManager>(*value_tree_, *this, pluginshared::UpdateData::GithubInfo{
+        global::kPluginRepoOwnerName, global::kPluginRepoName
+    });
 }
 
 EmptyAudioProcessor::~EmptyAudioProcessor() {
@@ -114,7 +117,6 @@ bool EmptyAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) con
 
 void EmptyAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) {
     juce::ScopedNoDenormals noDenormals;
-
     param_listener_.HandleDirty();
 
     size_t const num_samples = buffer.getNumSamples();

@@ -115,7 +115,7 @@ endif()
 # ----------------------------------------
 # audiofft
 # ----------------------------------------
-add_library(audiofft STATIC libs/AudioFFT/AudioFFT.cpp)
+add_library(audiofft STATIC libs/AudioFFT/AudioFFT.cpp libs/AudioFFT/AudioFFTcpx.cpp)
 target_include_directories(audiofft PUBLIC libs/AudioFFT)
 target_link_libraries(${PROJECT_NAME} PRIVATE audiofft)
 # fft lib for audio fft

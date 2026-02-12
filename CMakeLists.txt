@@ -159,3 +159,7 @@ else()
         target_compile_definitions(audiofft PRIVATE AUDIOFFT_INTEL_IPP)
     endif()
 endif()
+
+if(DEFINED DBUILD_IN_CI)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE DBUILD_IN_CI=1)
+endif()

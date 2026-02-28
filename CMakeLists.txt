@@ -66,11 +66,43 @@ juce_add_plugin(${PROJECT_NAME}
 )
 
 # 添加源文件
-file(GLOB_RECURSE src
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+target_sources(${PROJECT_NAME}
+PRIVATE
+    # src/dsp/dsp_lane4_template.cpp
+    src/dsp/dsp_dispatch.cpp
+    src/ui/plugin_ui.cpp
+    src/PluginEditor.cpp
+    src/PluginProcessor.cpp
 )
-target_sources(${PROJECT_NAME} PRIVATE ${src})
+
+### simd dispatch
+if(APPLE)
+    target_sources(${PROJECT_NAME}
+    PRIVATE
+        src/dsp/dsp_neon.cpp
+        src/dsp/dsp_avx2.cpp
+        src/dsp/dsp_avx.cpp
+        src/dsp/dsp_sse4.cpp
+        src/dsp/dsp_sse2.cpp
+    )
+    set_source_files_properties("src/dsp/dsp_neon.cpp" PROPERTIES COMPILE_FLAGS "-arch arm64")
+    set_source_files_properties("src/dsp/dsp_sse2.cpp" PROPERTIES COMPILE_FLAGS "-arch x86_64 -msse2")
+    set_source_files_properties("src/dsp/dsp_sse4.cpp" PROPERTIES COMPILE_FLAGS "-arch x86_64 -msse4.1")
+    set_source_files_properties("src/dsp/dsp_avx.cpp" PROPERTIES COMPILE_FLAGS "-arch x86_64 -mavx")
+    set_source_files_properties("src/dsp/dsp_avx2.cpp" PROPERTIES COMPILE_FLAGS "-arch x86_64 -mavx2")
+else()
+    target_sources(${PROJECT_NAME}
+    PRIVATE
+        src/dsp/dsp_avx2.cpp
+        src/dsp/dsp_avx.cpp
+        src/dsp/dsp_sse4.cpp
+        src/dsp/dsp_sse2.cpp
+    )
+    set_source_files_properties("src/dsp/dsp_sse2.cpp" PROPERTIES COMPILE_FLAGS "-msse2")
+    set_source_files_properties("src/dsp/dsp_sse4.cpp" PROPERTIES COMPILE_FLAGS "-msse4.1")
+    set_source_files_properties("src/dsp/dsp_avx.cpp" PROPERTIES COMPILE_FLAGS "-mavx")
+    set_source_files_properties("src/dsp/dsp_avx2.cpp" PROPERTIES COMPILE_FLAGS "-mavx2")
+endif()
 
 # 头文件目录
 target_include_directories(${PROJECT_NAME}

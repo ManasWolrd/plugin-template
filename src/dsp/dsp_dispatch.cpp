@@ -2,7 +2,7 @@
 
 #include <simd_detector.h>
 
-namespace warpcore {
+namespace dsp {
 ProcessorDsp GetProcessorDsp() noexcept {
     using IS = simd_detector::InstructionSet;
 

@@ -71,7 +71,7 @@ If macOS blocks a downloaded plugin, you can run the commands above on the plugi
 ## Build / 构建
 
 ```bash
-git clone --recurse https://github.com/ManasWorld/plugin-template.git
+git clone --recurse https://github.com/ManasWolrd/plugin-template.git
 
 # Windows
 cmake -G "Ninja" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S . -B build

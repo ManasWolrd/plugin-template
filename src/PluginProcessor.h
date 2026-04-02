@@ -3,6 +3,8 @@
 #include "pluginshared/preset_manager.hpp"
 #include "pluginshared/wrap_parameters.hpp"
 
+#include "dsp/dsp_state.hpp"
+
 class EmptyAudioProcessor final : public juce::AudioProcessor {
 public:
     static constexpr auto kParameterValueTreeIdentify = "PARAMETERS";
@@ -45,6 +47,9 @@ public:
     JuceParamListener param_listener_;
     std::unique_ptr<juce::AudioProcessorValueTreeState> value_tree_;
     std::unique_ptr<pluginshared::PresetManager> preset_manager_;
+
+    dsp::DspProcessor dsp_processor_;
+    dsp::DspState dsp_state_;
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EmptyAudioProcessor)

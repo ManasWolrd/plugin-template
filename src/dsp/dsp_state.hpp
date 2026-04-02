@@ -5,22 +5,24 @@
 #include "global.hpp"
 
 namespace dsp {
-struct ProcessorState {
+struct DspState {
 };
 
-struct Param {
+struct DspParam {
 };
 
-struct ProcessorDsp {
-    void(*init)(ProcessorState& state, float fs) noexcept;
-    void(*reset)(ProcessorState& state) noexcept;
-    void(*update)(ProcessorState& state, const Param& p) noexcept;
-    void(*process)(ProcessorState& state, float* left, float* right, int num_samples) noexcept;
+struct DspProcessor {
+    void(*init)(DspState& state, float fs) noexcept;
+    void(*reset)(DspState& state) noexcept;
+    void(*update)(DspState& state, const DspParam& p) noexcept;
+    void(*process)(DspState& state, float* left, float* right, int num_samples) noexcept;
+
+    const char* name;
 
     bool IsValid() const noexcept {
-        return init != nullptr && reset != nullptr && update != nullptr && process != nullptr;
+        return init != nullptr;
     }
 };
 
-ProcessorDsp GetProcessorDsp() noexcept;
+DspProcessor GetProcessorDsp() noexcept;
 }

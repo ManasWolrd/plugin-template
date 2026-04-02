@@ -12,6 +12,8 @@ EmptyAudioProcessor::EmptyAudioProcessor()
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
       ) {
+    dsp_processor_ = dsp::GetProcessorDsp();
+    
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
     value_tree_ = std::make_unique<juce::AudioProcessorValueTreeState>(*this, nullptr, kParameterValueTreeIdentify,
@@ -84,8 +86,11 @@ void EmptyAudioProcessor::changeProgramName(int index, const juce::String& newNa
 
 //==============================================================================
 void EmptyAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
+    if (!dsp_processor_.IsValid()) return;
+
     float fs = static_cast<float>(sampleRate);
     param_listener_.MarkAll();
+    dsp_processor_.init(dsp_state_, fs);
 }
 
 void EmptyAudioProcessor::releaseResources() {
@@ -116,12 +121,18 @@ bool EmptyAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) con
 }
 
 void EmptyAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) {
+    if (!dsp_processor_.IsValid()) return;
+
     juce::ScopedNoDenormals noDenormals;
     param_listener_.HandleDirty();
 
-    size_t const num_samples = buffer.getNumSamples();
+    const int num_samples = buffer.getNumSamples();
     float* left_ptr = buffer.getWritePointer(0);
-    float* right_ptr = buffer.getWritePointer(1);
+    float* right_ptr = nullptr;
+    if (buffer.getNumChannels() == 2) {
+        right_ptr = buffer.getWritePointer(1);
+    }
+    dsp_processor_.process(dsp_state_, left_ptr, right_ptr, num_samples);
 }
 
 //==============================================================================

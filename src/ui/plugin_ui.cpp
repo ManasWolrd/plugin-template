@@ -4,7 +4,9 @@
 
 PluginUi::PluginUi(EmptyAudioProcessor& p)
     : preset_(*p.preset_manager_) {
+    preset_.SetDspInstName(p.dsp_processor_.name);
     addAndMakeVisible(preset_);
+    setSize(400, 300);
 }
 
 void PluginUi::resized() {

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "pluginshared/component.hpp"
 #include "pluginshared/preset_panel.hpp"
 
@@ -14,13 +13,8 @@ public:
 
     void resized() override;
     void paint(juce::Graphics& g) override;
-    
-    std::function<void(int,int)> on_want_new_size;
 private:
-    void TrySetSize(int width, int height) {
-        if (on_want_new_size) {
-            on_want_new_size(width, height); 
-        }
-    }
+    void TrySetSize(int width, int height);
+
     pluginshared::PresetPanel preset_;
 };

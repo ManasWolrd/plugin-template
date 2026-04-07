@@ -32,7 +32,8 @@ EmptyAudioProcessorEditor::EmptyAudioProcessorEditor(EmptyAudioProcessor& p)
     auto* props = plugin_config_->config.get();
     if (props != nullptr) {
         scale_ = static_cast<float>(props->getDoubleValue("scale", scale_));
-        setSize(static_cast<int>(static_cast<float>(ui_width_) * scale_), static_cast<int>(static_cast<float>(ui_height_) * scale_));
+        setSize(static_cast<int>(static_cast<float>(ui_width_) * scale_),
+                static_cast<int>(static_cast<float>(ui_height_) * scale_));
     }
     else {
         setSize(ui_width_, ui_height_);
@@ -41,18 +42,10 @@ EmptyAudioProcessorEditor::EmptyAudioProcessorEditor(EmptyAudioProcessor& p)
     getConstrainer()->setFixedAspectRatio(static_cast<float>(ui_width_) / static_cast<float>(ui_height_));
     setResizeLimits(ui_width_, ui_height_, 9999, 9999);
 
-    ui_.on_want_new_size = [this](int width, int height) {
-        ui_width_ = width;
-        ui_height_ = height;
-        ui_.setSize(width, height);
-        getConstrainer()->setFixedAspectRatio(static_cast<float>(ui_width_) / static_cast<float>(ui_height_));
-        setSize(static_cast<int>(static_cast<float>(width) * scale_), static_cast<int>(static_cast<float>(height) * scale_));
-    };
     addAndMakeVisible(ui_);
 }
 
-EmptyAudioProcessorEditor::~EmptyAudioProcessorEditor() {
-}
+EmptyAudioProcessorEditor::~EmptyAudioProcessorEditor() {}
 
 //==============================================================================
 void EmptyAudioProcessorEditor::paint(juce::Graphics& g) {
@@ -68,4 +61,13 @@ void EmptyAudioProcessorEditor::resized() {
             props->setValue("scale", scale_);
         }
     }
+}
+
+void EmptyAudioProcessorEditor::SetChildSize(int width, int height) {
+    ui_width_ = width;
+    ui_height_ = height;
+    ui_.setSize(width, height);
+    getConstrainer()->setFixedAspectRatio(static_cast<float>(ui_width_) / static_cast<float>(ui_height_));
+    setSize(static_cast<int>(static_cast<float>(width) * scale_),
+            static_cast<int>(static_cast<float>(height) * scale_));
 }

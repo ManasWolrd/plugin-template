@@ -164,6 +164,7 @@ jobs:
     - name: Append tag to artifacts
       run: |
         TAG_NAME=${GITHUB_REF#refs/tags/}
+        REPO_NAME="${{ github.event.repository.name }}"
             
         MAC_RELEASE_DIR=$(find $GITHUB_WORKSPACE/artifacts/plugin-macos -type d -name "Release" | head -n 1)
         WIN_RELEASE_DIR=$(find $GITHUB_WORKSPACE/artifacts/plugin-win -type d -name "Release" | head -n 1)
@@ -171,10 +172,17 @@ jobs:
 
         DEST_DIR="$GITHUB_WORKSPACE/artifacts"
 
-        cd artifacts
-        zip -r plugin-win-${TAG_NAME}.zip "$WIN_RELEASE_DIR"
-        zip -r plugin-macos-${TAG_NAME}.zip "$MAC_RELEASE_DIR"
-        zip -r plugin-linux-${TAG_NAME}.zip "$LINUX_RELEASE_DIR"
+        cd "$WIN_DIR"
+        zip -r "${REPO_NAME}-win-${TAG_NAME}.zip" .
+        cp "${REPO_NAME}-win-${TAG_NAME}.zip" "$DEST_DIR/"
+
+        cd "$MAC_DIR"
+        zip -r "${REPO_NAME}-macos-${TAG_NAME}.zip" .
+        cp "${REPO_NAME}-macos-${TAG_NAME}.zip" "$DEST_DIR/"
+
+        cd "$LINUX_DIR"
+        zip -r "${REPO_NAME}-linux-${TAG_NAME}.zip" .
+        cp "${REPO_NAME}-linux-${TAG_NAME}.zip" "$DEST_DIR/"
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2

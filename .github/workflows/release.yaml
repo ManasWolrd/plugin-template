@@ -152,15 +152,33 @@ jobs:
         name: plugin-linux
         path: artifacts/plugin-linux
 
+    # - name: Append tag to artifacts
+    #   run: |
+    #     TAG_NAME=${GITHUB_REF#refs/tags/}  # Extracts the tag name, e.g., v1.0.0
+
+    #     # Zip each platform's artifacts with the tag in the name
+    #     cd artifacts
+    #     zip -r plugin-win-${TAG_NAME}.zip plugin-win
+    #     zip -r plugin-macos-${TAG_NAME}.zip plugin-macos
+    #     zip -r plugin-linux-${TAG_NAME}.zip plugin-linux
     - name: Append tag to artifacts
       run: |
-        TAG_NAME=${GITHUB_REF#refs/tags/}  # Extracts the tag name, e.g., v1.0.0
+        TAG_NAME=${GITHUB_REF#refs/tags/}
 
-        # Zip each platform's artifacts with the tag in the name
         cd artifacts
-        zip -r plugin-win-${TAG_NAME}.zip plugin-win
-        zip -r plugin-macos-${TAG_NAME}.zip plugin-macos
-        zip -r plugin-linux-${TAG_NAME}.zip plugin-linux
+
+        for PLATFORM in win macos linux; do
+          if [ -d "plugin-${PLATFORM}" ]; then
+            RELEASE_PATH=$(find "plugin-${PLATFORM}" -type d -name "Release" | head -n 1)
+            
+            if [ -n "$RELEASE_PATH" ]; then
+              echo "Packing ${PLATFORM} from ${RELEASE_PATH}..."
+              (cd "$RELEASE_PATH" && zip -r "../../plugin-${PLATFORM}-${TAG_NAME}.zip" .)
+            else
+              echo "Warning: Release folder not found for ${PLATFORM}"
+            fi
+          fi
+        done
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2

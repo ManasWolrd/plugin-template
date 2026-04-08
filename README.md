@@ -16,13 +16,13 @@ After extraction, the folder structure will look roughly like this:
 ```text
 plugin-win-vX.Y.Z.zip
   plugin-win/
-    PluginName_artefacts/
+    PluginName_artefacts/Release/
       VST3/
         PluginName.vst3/
 
 plugin-macos-vX.Y.Z.zip
   plugin-macos/
-    PluginName_artefacts/
+    PluginName_artefacts/Release/
       AU/
         PluginName.component/
       VST3/
@@ -30,7 +30,7 @@ plugin-macos-vX.Y.Z.zip
 
 plugin-linux-vX.Y.Z.zip
   plugin-linux/
-    PluginName_artefacts/
+    PluginName_artefacts/Release/
       LV2/
         PluginName.lv2/
       VST3/

@@ -172,15 +172,15 @@ jobs:
 
         DEST_DIR="$GITHUB_WORKSPACE/artifacts"
 
-        cd "$WIN_DIR"
+        cd "$WIN_RELEASE_DIR"
         zip -r "${REPO_NAME}-win-${TAG_NAME}.zip" .
         cp "${REPO_NAME}-win-${TAG_NAME}.zip" "$DEST_DIR/"
 
-        cd "$MAC_DIR"
+        cd "$MAC_RELEASE_DIR"
         zip -r "${REPO_NAME}-macos-${TAG_NAME}.zip" .
         cp "${REPO_NAME}-macos-${TAG_NAME}.zip" "$DEST_DIR/"
 
-        cd "$LINUX_DIR"
+        cd "$LINUX_RELEASE_DIR"
         zip -r "${REPO_NAME}-linux-${TAG_NAME}.zip" .
         cp "${REPO_NAME}-linux-${TAG_NAME}.zip" "$DEST_DIR/"
 

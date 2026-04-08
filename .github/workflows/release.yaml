@@ -190,8 +190,8 @@ jobs:
         draft: true
         tag_name: ${{ github.ref_name }}
         files: |
-          artifacts/plugin-win-*.zip
-          artifacts/plugin-macos-*.zip
-          artifacts/plugin-linux-*.zip
+          artifacts/*-win-*.zip
+          artifacts/*-macos-*.zip
+          artifacts/*-linux-*.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

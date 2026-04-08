@@ -173,8 +173,8 @@ jobs:
 
         cd artifacts
         zip -r plugin-win-${TAG_NAME}.zip "$WIN_RELEASE_DIR"
-        zip -r plugin-macos-${TAG_NAME}.zip "MAC_RELEASE_DIR"
-        zip -r plugin-linux-${TAG_NAME}.zip "LINUX_RELEASE_DIR"
+        zip -r plugin-macos-${TAG_NAME}.zip "$MAC_RELEASE_DIR"
+        zip -r plugin-linux-${TAG_NAME}.zip "$LINUX_RELEASE_DIR"
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2

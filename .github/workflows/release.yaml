@@ -171,28 +171,10 @@ jobs:
 
         DEST_DIR="$GITHUB_WORKSPACE/artifacts"
 
-        # macOS
-        if [ -d "$MAC_RELEASE_DIR" ]; then
-          echo "Packing macOS from $MAC_RELEASE_DIR"
-          cd "$MAC_RELEASE_DIR"
-          zip -r "$DEST_DIR/plugin-macos-${TAG_NAME}.zip" .
-        fi
-
-        # Windows
-        if [ -d "$WIN_RELEASE_DIR" ]; then
-          echo "Packing Windows from $WIN_RELEASE_DIR"
-          cd "$WIN_RELEASE_DIR"
-          zip -r "$DEST_DIR/plugin-win-${TAG_NAME}.zip" .
-        fi
-
-        # Linux
-        if [ -d "$LINUX_RELEASE_DIR" ]; then
-          echo "Packing Linux from $LINUX_RELEASE_DIR"
-          cd "$LINUX_RELEASE_DIR"
-          zip -r "$DEST_DIR/plugin-linux-${TAG_NAME}.zip" .
-        fi
-
-        cd $GITHUB_WORKSPACE
+        cd artifacts
+        zip -r plugin-win-${TAG_NAME}.zip "$WIN_RELEASE_DIR"
+        zip -r plugin-macos-${TAG_NAME}.zip "MAC_RELEASE_DIR"
+        zip -r plugin-linux-${TAG_NAME}.zip "LINUX_RELEASE_DIR"
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2

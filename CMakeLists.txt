@@ -8,6 +8,8 @@ set(PLUGIN_REPO_URL "https://github.com/ManasWolrd/plugin-template")
 set(PLUGIN_NAME plugin-template)
 set(PLUGIN_VERSION 0.0.1)
 set(PLUGIN_BUNDLE_ID "com.ManasWolrd.${PLUGIN_NAME}")
+set(plugin_codes Pgta)
+set(plugin_manufacturer_code MaWd)
 
 option(BUILD_STANDALONE "Build Standalone plugin format" ON)
 option(BUILD_VST3 "Build VST3 plugin format" ON)
@@ -25,9 +27,6 @@ add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_XCODE_GENERATE_SCHEME OFF)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-string(SUBSTRING plugin_codes ${PLUGIN_NAME} 0 4)
-string(SUBSTRING plugin_manufacturer_code ${TEAM_NAME} 0 4)
 
 add_subdirectory(libs/JUCE)
 
@@ -166,32 +165,7 @@ else()
     find_package(IPP QUIET)
 
     if(NOT IPP_FOUND)
-        # use CI Intel IPP
-        if(WIN32)
-            set(CI_IPP_ROOT "$ENV{USERPROFILE}/.nuget/packages/intelipp.static.win-x64/2022.3.0.387")
-            set(CI_IPP_INC "${CI_IPP_ROOT}/build/native/include/ipp")
-            set(CI_IPP_LIB "${CI_IPP_ROOT}/build/native/win-x64/")
-            set(CI_IPP_LIBS ippsmt ippcoremt ippimt ippcvmt ippvmmt)
-        elseif(UNIX)
-            set(CI_IPP_ROOT "/opt/intel/oneapi/ipp/latest")
-            set(CI_IPP_INC "${CI_IPP_ROOT}/include")
-            set(CI_IPP_LIB "${CI_IPP_ROOT}/lib/intel64")
-            set(CI_IPP_LIBS ipps ippcore ippi ippcv ippvm)
-        endif()
-
-        if(EXISTS "${CI_IPP_INC}")
-            set(IPP_FOUND TRUE)
-        endif()
-
-        if(IPP_FOUND)
-            message(STATUS "AudioFFT: Using Intel IPP")
-            target_include_directories(audiofft PRIVATE ${CI_IPP_INC})
-            target_link_directories(audiofft PUBLIC ${CI_IPP_LIB})
-            target_link_libraries(audiofft PUBLIC ${CI_IPP_LIBS})
-            target_compile_definitions(audiofft PRIVATE AUDIOFFT_INTEL_IPP)
-        else()
-            message(WARNING "AudioFFT: IPP not found, using default Ooura implementation")
-        endif()
+        message(WARNING "AudioFFT: IPP not found, using default Ooura implementation")
     else()
         # use IPP on developer's pc
         message(STATUS "AudioFFT: Using Intel IPP")
@@ -200,8 +174,8 @@ else()
     endif()
 endif()
 
-if(DEFINED DBUILD_IN_CI)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE DBUILD_IN_CI=1)
+if(BUILD_IN_CI)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_IN_CI=1)
 endif()
 
 # ----------------------------------------

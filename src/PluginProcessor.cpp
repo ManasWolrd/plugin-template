@@ -127,10 +127,7 @@ void EmptyAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::M
 
     const int num_samples = buffer.getNumSamples();
     float* left_ptr = buffer.getWritePointer(0);
-    float* right_ptr = nullptr;
-    if (buffer.getNumChannels() == 2) {
-        right_ptr = buffer.getWritePointer(1);
-    }
+    float* right_ptr = buffer.getWritePointer(1);
     dsp_processor_.process(dsp_state_, left_ptr, right_ptr, num_samples);
 }
 
@@ -168,6 +165,7 @@ void EmptyAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
         value_tree_->replaceState(parameter);
     }
 
+    reset();
     suspendProcessing(false);
 }
 
